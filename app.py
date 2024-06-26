@@ -74,7 +74,7 @@ min_topic_size = st.number_input("Minimum Topic Size", min_value=2, max_value=50
 nr_topics = st.number_input("Number of Top Words", min_value=2, max_value=30, value=12)
 
 st.write('Note:')
-st.info("USER INPUT : Should be more than 100 text if else it cannot proceed to process the topics.", icon="ℹ️")
+st.info("USER INPUT : Should be more than 100 text otherwise it cannot proceed to process the topics.", icon="ℹ️")
 
 # Text input
 st.write("Please input your text (one per line):")
