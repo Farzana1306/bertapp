@@ -61,7 +61,7 @@ def assign_category(description):
         return 'Other'
 
 # Streamlit UI
-st.title('BERTOPIC TOPIC MODELING')
+st.title('BERTOPIC TOPIC MODELING AND CATEGORIZATION TOPICS')
 
 # Input parameter to setup BERTopic
 st.write("Please provide BERTopic parameters as follows:")
@@ -84,30 +84,31 @@ st.write("Please input your text (one per line):")
 user_input = st.text_area("Input text", height=300)
 texts = user_input.split("\n")
 
-if user_input:
-    data = pd.DataFrame({"text": texts})
-    st.write("Sample data:")
-    st.write(data.head())
+if st.button("Analyze"):
+    if user_input:
+        data = pd.DataFrame({"text": texts})
+        st.write("Sample data:")
+        st.write(data.head())
 
-    # Assign categories based on the cause of anger
-    data['category'] = data['text'].apply(assign_category)
+        # Assign categories based on the cause of anger
+        data['category'] = data['text'].apply(assign_category)
 
-    topics, topic_info = generate_topics(texts, num_topics, min_topic_size, nr_topics)
-    data['topic'] = topics
+        topics, topic_info = generate_topics(texts, num_topics, min_topic_size, nr_topics)
+        data['topic'] = topics
 
-    # Calculate predominant category for each topic
-    predominant_categories = data.groupby('topic')['category'].agg(lambda x: x.value_counts().idxmax())
-    topic_info['category'] = topic_info['Topic'].map(predominant_categories)
+        # Calculate predominant category for each topic
+        predominant_categories = data.groupby('topic')['category'].agg(lambda x: x.value_counts().idxmax())
+        topic_info['category'] = topic_info['Topic'].map(predominant_categories)
 
-    # Merge the topic information with the main dataframe
-    topic_info = topic_info.rename(columns={"Name": "topic_name"})
-    data_with_info = data.merge(topic_info[['Topic', 'topic_name', 'category']], left_on='topic', right_on='Topic', how='left')
+        # Merge the topic information with the main dataframe
+        topic_info = topic_info.rename(columns={"Name": "topic_name"})
+        data_with_info = data.merge(topic_info[['Topic', 'topic_name', 'category']], left_on='topic', right_on='Topic', how='left')
 
-    # Drop the redundant 'Topic' column
-    data_with_info = data_with_info.drop(columns=['Topic'])
+        # Drop the redundant 'Topic' column
+        data_with_info = data_with_info.drop(columns=['Topic'])
     
-    st.write("Data with topics and categories:")
-    st.write(data_with_info)
+        st.write("Data with topics and categories:")
+        st.write(data_with_info)
 
-    st.write("Topic Info with Categories:")
-    st.write(topic_info)
+        st.write("Topic Info with Categories:")
+        st.write(topic_info)
