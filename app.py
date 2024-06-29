@@ -61,10 +61,13 @@ def assign_category(description):
         return 'Other'
 
 # Streamlit UI
-st.title('BERTopic Topic Modeling and Categorization for Anger Topics')
+st.title('BERTOPIC TOPIC MODELING')
 
 # Input parameter to setup BERTopic
 st.write("Please provide BERTopic parameters as follows:")
+
+st.write('Note:')
+st.info("USER INPUT : You can adjust the parameters such as the number of topics, minimum topic size, and number of top words to fine-tune the BERTopic model according to your specific data and analysis needs. Note that the default parameters are 9, 5 and 12.", icon="ℹ️")
 
 # Number of Topics
 num_topics = st.number_input("Number of Topics", min_value=2, max_value=50, value=9)
